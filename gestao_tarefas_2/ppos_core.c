@@ -25,25 +25,22 @@ void ppos_init () {
     main_task.id = id_counter++;
     main_task.prev = NULL;
     main_task.next = NULL;
-    main_task.stack = NULL; // main não precisa de pilha separada
-    getcontext(&main_task.context); // Salva o contexto da main
+    main_task.stack = NULL; 
+
+    getcontext(&main_task.context);
     current_task = &main_task;
 
     #ifdef DEBUG
     printf("ppos_init: main task inicializada. ID: %d\n", main_task.id);
     #endif
 }
-// fazer depois
 int task_init (task_t *task, void  (*start_func)(void *), void *arg) {
     if (!task || !start_func) return -1;
 
     task->id = id_counter++;
     task->prev = NULL;
     task->next = NULL;
-    
-    // Aloca pilha para a tarefa
     task->stack = malloc(STACKSIZE);
-    if (!task->stack) return -1;
 
     // Inicializa contexto
     getcontext(&task->context);
