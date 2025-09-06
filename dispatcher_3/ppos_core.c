@@ -24,6 +24,7 @@ GRR: 20244408
 // ----------------
 
 void dispatcher();
+task_t *scheduler();
 
 task_t *current_task, main_task, dispatcher_task;
 task_t *ready_q = NULL; // Fila de tarefas prontas 
@@ -117,26 +118,25 @@ int task_switch (task_t *task) {
 }
 
 task_t *scheduler() {
-#ifdef DEBUG
-    printf("scheduler: tarefas na fila: [");
-    if (ready_q)
-    {
-        task_t *aux = ready_q;
-        do
+    #ifdef DEBUG
+        printf("scheduler: tarefas na fila: [");
+        if (ready_q)
         {
-            printf("%d", aux->id);
-            aux = aux->next;
-            if (aux != ready_q)
-                printf(", ");
-        } while (aux != ready_q);
-    }
-    printf("]\n");
+            task_t *aux = ready_q;
+            do
+            {
+                printf("%d", aux->id);
+                aux = aux->next;
+                if (aux != ready_q)
+                    printf(", ");
+            } while (aux != ready_q);
+        }
+        printf("]\n");
 
-    if (ready_q) {
-        printf("scheduler: próxima tarefa escolhida: %d\n", ready_q->id);
-    }
+        if (ready_q) {
+            printf("scheduler: próxima tarefa escolhida: %d\n", ready_q->id);
+        }
     #endif
-
 
     return ready_q;
 }
